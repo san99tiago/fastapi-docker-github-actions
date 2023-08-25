@@ -1,0 +1,18 @@
+# Run with:
+# --> docker-compose up --build
+
+version: "3.8"
+
+services:
+  fastapi:
+    container_name: fastapi_app
+    build: ./src
+    ports:
+      - "8080:80"
+    networks:
+      - docker_apis_and_apps
+
+networks:
+  docker_apis_and_apps:
+    driver: bridge
+    name: docker_apis_and_apps
