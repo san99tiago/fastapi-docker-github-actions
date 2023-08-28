@@ -1,4 +1,4 @@
-name: Build FastAPI Docker Image and Push to DockerHub
+name: FastAPI Docker Image Test, Build and Push to DockerHub
 
 on:
   push:
@@ -7,19 +7,54 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
+
+  code-quality:
     runs-on: ubuntu-latest
+    name: Check coding standards
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v3
-      # TODO: Add testing
+      - uses: actions/checkout@v3
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: poetry
+
+      - name: Install Python dependencies
+        run: poetry install
+
+      - name: Check code formatting
+        run: poetry run poe black-format
+
+
+  test:
+    needs: code-quality
+    runs-on: ubuntu-latest
+    name: Run tests
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run tests
+        run: poetry run poe test-unit
 
   docker:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2

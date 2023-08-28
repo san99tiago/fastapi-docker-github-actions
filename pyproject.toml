@@ -8,13 +8,14 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
+fastapi = "^0.103.0"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.20.0"
 pytest = "^7.3.2"
 pytest-mock = "^3.11.1"
 coverage = "^7.2.7"
-fastapi = {extras = ["all"], version = "^0.98.0"}
+black = "^23.7.0"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -31,6 +32,8 @@ build-backend = "poetry.core.masonry.api"
 fastapi-local = "uvicorn src.main:app --reload"
 fastapi-docker-up = "docker-compose up --build"
 fastapi-docker-down = "docker-compose down"
+black-format = "black ."
+black-check = "black . --check --diff -v"
 test-unit = ["_test_unit", "_coverage_html"]
 _test_unit = "coverage run -m pytest tests/unit"
 _coverage_html = "coverage html"
