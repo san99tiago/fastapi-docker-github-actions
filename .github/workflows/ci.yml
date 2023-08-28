@@ -2,9 +2,10 @@ name: FastAPI Docker Image Test, Build and Push to DockerHub
 
 on:
   push:
-    branches: [ "main", "feature/**"]
+    branches: [ 'main', 'feature/**']
+    tags: [ 'v*']
   # pull_request:
-  #   branches: [ "main" ]
+  #   branches: [ 'main' ]
 
 jobs:
 
