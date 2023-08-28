@@ -9,8 +9,8 @@ on:
 jobs:
 
   code-quality:
-    runs-on: ubuntu-latest
     name: Check coding standards
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -26,13 +26,13 @@ jobs:
         run: poetry install
 
       - name: Check code formatting
-        run: poetry run poe black-format
+        run: poetry run poe black-check
 
 
   test:
+    name: Run tests
     needs: code-quality
     runs-on: ubuntu-latest
-    name: Run tests
     steps:
       - uses: actions/checkout@v3
 
@@ -51,6 +51,7 @@ jobs:
         run: poetry run poe test-unit
 
   docker:
+    name: Build and Push to DockerHub
     needs: test
     runs-on: ubuntu-latest
     steps:
